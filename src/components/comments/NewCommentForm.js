@@ -9,7 +9,6 @@ const NewCommentForm = (props) => {
     event.preventDefault();
 
     // optional: Could validate here
-
     // send comment to server
   };
 

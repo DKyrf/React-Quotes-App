@@ -1,8 +1,9 @@
 import useValidator from "../hooks/useValidator";
 import { useSelector, useDispatch } from "react-redux";
 import { newQuoteAction } from "../store/newQuoteSlice";
-import { quoteAction } from "../store/quotesSlice"
 import { useNavigate } from "react-router-dom";
+import { addQuote } from "../hooks/use-http";
+import { useCallback } from "react";
 import LoadingSpinner from "../UI/LoadingSpinner"
 import Card from '../UI/Card';
 import classes from './QuoteForm.module.css';
@@ -18,13 +19,18 @@ const QuoteForm = (props) => {
   const newEntry = useSelector(state => state.newQuoteReducer);
   const dispatchFN = useDispatch();
 
-  function submitFormHandler(event) {
-    event.preventDefault();
-    dispatchFN(quoteAction.addQuote({
-      id: `q${Math.round(Math.random() * 100)}`,
+  const fetchQuotes = useCallback(async () => {
+    const quotes = await addQuote({
       author: newEntry.author,
       text: newEntry.text
-    }));
+    });
+
+    return quotes;
+  }, [newEntry]);
+
+  function submitFormHandler(event) {
+    event.preventDefault();
+    fetchQuotes();
     dispatchFN(newQuoteAction.reset());
     navigate("/", { replace: true })
   };
