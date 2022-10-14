@@ -1,32 +1,53 @@
-import { Fragment } from 'react';
-import { useSelector } from "react-redux";
+import { Fragment, useEffect } from 'react';
+import { httpAction } from '../store/httpSlice';
+import { useSelector, useDispatch } from "react-redux";
+import { FetchQuotes } from '../hooks/use-http';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { fetchQuotes } from '../hooks/use-http';
 import QuoteItem from './QuoteItem';
 import classes from './QuoteList.module.css';
 
-// const sorteQuotes = (prevQuotes, ascChecker) => [...prevQuotes].sort((a, b) => {
-//   if (ascChecker) {
-//     return a.id > b.id ? 1 : -1
-//   } else {
-//     return a.id < b.id ? 1 : -1
-//   }
-// });
+const sorteQuotes = (prevQuotes, ascChecker) => [...prevQuotes].sort((a, b) => {
+  if (ascChecker) {
+    return a.id > b.id ? 1 : -1
+  } else {
+    return a.id < b.id ? 1 : -1
+  }
+});
 
 const QuoteList = () => {
 
+  const dispatchFN = useDispatch();
+  const { quotes, status, error } = useSelector(state => state.httpReducer)
+
+
+  useEffect(() => {
+    const getData = async () => {
+      dispatchFN(httpAction.quotesSending());
+      const { quotes, error } = await FetchQuotes();
+      console.log(error, quotes)
+      if (!error) {
+        dispatchFN(httpAction.requestSucessfull(quotes));
+      }
+    };
+
+    getData();
+
+  }, [dispatchFN]);
+
+  console.log(quotes, status, error)
+
+
   const navigate = useNavigate();
   const searchParams = useLocation();
-  const quotes = [];
   const searched = new URLSearchParams(searchParams.search);
   const isAscending = searched.get("sort") === "asc";
-  // const sorted = sorteQuotes(quotes, isAscending);
+  const sorted = sorteQuotes(quotes, isAscending);
+
+
 
   const navigateHandler = () => {
     navigate(`/quotes?sort=${isAscending ? "des" : "asc"}`);
   };
-
-  console.log(fetchQuotes())
 
   return (
     <Fragment>
@@ -34,7 +55,7 @@ const QuoteList = () => {
         <button onClick={navigateHandler}>Sorted {isAscending ? "Ascending" : "Decending"}</button>
       </div>
       <ul className={classes.list}>
-        {quotes.map((quote) => (
+        {sorted.map((quote) => (
           <QuoteItem
             key={quote.id}
             id={quote.id}

@@ -1,16 +1,15 @@
 import { httpAction } from "../store/httpSlice";
 
-const firebaseDB = "https://router-quotes-acf44-default-rtdb.firebaseio.com";
-// console.log(firebaseDB)
+const firebaseDB = "ttps://router-quotes-acf44-default-rtdb.firebaseio.com";
 
-export async function fetchQuotes() {
-    httpAction.quotesSending();
+export async function FetchQuotes() {
+
 
     const fethedData = await fetch(`${firebaseDB}/quotes.json`);
     const data = await fethedData.json();
 
     if (!fethedData.ok) {
-        httpAction.requestError(fethedData.statusText || "Could not feth quotes.");
+        return { quotes: [], error: fethedData.statusText }
     };
 
     const quotes = [];
@@ -23,7 +22,8 @@ export async function fetchQuotes() {
         quotes.push(quote);
     };
 
-    return quotes;
+    return { quotes: quotes, error: null };
+
 };
 
 export async function fetchSingleQuote(id) {

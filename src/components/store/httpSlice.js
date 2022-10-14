@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    quotes: null,
-    comments: null,
+    quotes: [],
     error: null,
     status: "",
 };
@@ -12,28 +11,21 @@ const httpSlice = createSlice({
     initialState,
     reducers: {
         quotesSending(state) {
+            console.log("CYKA")
             state.status = "Pending...";
-            state.comments = null;
-            state.quotes = null;
+            state.quotes = [];
             state.error = null;
         },
         requestSucessfull(state, action) {
+            console.log("CYKA_БЛЯ")
             state.quotes = action.payload;
             state.error = null;
             state.status = "Completed";
-
-            console.log(state.quotes)
         },
         requestError(state, action) {
             state.error = action.payload;
-            state.quotes = null;
-            state.comments = null;
+            state.quotes = [];
             state.status = "Something went wrong";
-        },
-        commentsSending(state, action) {
-            state.comments = action.payload;
-            state.error = null;
-            state.status = null;
         },
 
     }
