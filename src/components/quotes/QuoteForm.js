@@ -1,7 +1,6 @@
 import useValidator from "../hooks/useValidator";
 import { useSelector, useDispatch } from "react-redux";
 import { newQuoteAction } from "../store/newQuoteSlice";
-import { useNavigate } from "react-router-dom";
 import { addQuote } from "../hooks/use-http";
 import { useCallback } from "react";
 import LoadingSpinner from "../UI/LoadingSpinner"
@@ -11,7 +10,6 @@ import classes from './QuoteForm.module.css';
 let init = true;
 
 const QuoteForm = (props) => {
-  const navigate = useNavigate();
   const { authChangeHandler, textChangeHandler, authorBlur, textBlur, authValid, textValid, } = useValidator();
 
   init = false;
@@ -32,7 +30,6 @@ const QuoteForm = (props) => {
     event.preventDefault();
     fetchQuotes();
     dispatchFN(newQuoteAction.reset());
-    navigate("/", { replace: true })
   };
 
   return (

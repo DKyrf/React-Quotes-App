@@ -6,6 +6,7 @@ const initialState = {
     isValid: false,
     authTouched: false,
     textTouched: false,
+    showComments: false,
 };
 
 const newQuoteSlice = createSlice({
@@ -36,6 +37,9 @@ const newQuoteSlice = createSlice({
         textBlurHandler(state) {
             state.textTouched = false;
         },
+        setCommentsVisibility(state, action) {
+            state.showComments = action.payload;
+        }
     },
 });
 

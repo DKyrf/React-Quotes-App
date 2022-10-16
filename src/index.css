@@ -59,3 +59,11 @@ body {
   background-color: grey;
   cursor:not-allowed;
 }
+
+li{
+  list-style: none;
+}
+
+ul{
+  padding: 0;
+}

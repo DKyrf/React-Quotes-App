@@ -6,13 +6,9 @@ import QuoteDetail from "./components/pages/QuoteDetail";
 import HighlightedQuote from "./components/quotes/HighlightedQuote"
 import Comments from "./components/comments/Comments";
 import NotFound from "./components/pages/NotFound"
-// import { useEffect } from "react";
-// import { fetchQuotes } from '../hooks/use-http';
 
 function App() {
-  // useEffect(() => {
 
-  // })
   return (
     <Layout>
       <Routes>

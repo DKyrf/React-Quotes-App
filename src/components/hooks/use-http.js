@@ -1,6 +1,6 @@
 import { httpAction } from "../store/httpSlice";
 
-const firebaseDB = "ttps://router-quotes-acf44-default-rtdb.firebaseio.com";
+const firebaseDB = "https://router-quotes-acf44-default-rtdb.firebaseio.com";
 
 export async function FetchQuotes() {
 
@@ -27,19 +27,15 @@ export async function FetchQuotes() {
 };
 
 export async function fetchSingleQuote(id) {
-    const fetchedQuote = fetch(`${firebaseDB}/quotes/${id}.json`);
-    const quote = await fetchedQuote.json();
+    const fetchedQuote = await fetch(`${firebaseDB}/quotes/${id}.json`);
 
-    if (!fetchedQuote.ok) {
-        httpAction.requestError(fetchedQuote.statusText || "Could not feth quote.")
-    }
+    if (fetchedQuote.ok) {
+        return await fetchedQuote.json();
+    } else throw new Error("Couldn't fetch quote." || fetchedQuote.statusText)
 
-    return quote
 };
 
 export async function addQuote(quoteData) {
-
-    console.log(quoteData);
 
     const postQuote = await fetch(`${firebaseDB}/quotes.json`, {
         method: "POST",
@@ -51,7 +47,7 @@ export async function addQuote(quoteData) {
     const data = await postQuote.json();
 
     if (!postQuote.ok) {
-        httpAction.requestError(postQuote.statusText || "Could not feth quote.")
+        throw new Error("Could not feth quote." || postQuote.statusText)
     };
 
     return data
@@ -61,7 +57,7 @@ export async function addQuote(quoteData) {
 export async function addComment(requestData) {
     const postComment = await fetch(`${firebaseDB}/comments/${requestData.id}.json`, {
         method: "POST",
-        body: JSON.stringify(requestData),
+        body: JSON.stringify(requestData.value),
         headers: {
             "Content-Type": "application/json"
         },
@@ -70,7 +66,7 @@ export async function addComment(requestData) {
     const data = postComment.json();
 
     if (!postComment.ok) {
-        httpAction.requestError(postComment.statusText || "Could not add comment.")
+        throw new Error("Could not add comment." || postComment.statusText)
     };
 
     return { commentID: data.name };
@@ -78,11 +74,11 @@ export async function addComment(requestData) {
 };
 
 export async function getAllComments(quoteID) {
-    const getComments = fetch(`${firebaseDB}/comments/${quoteID}.json`);
+    const getComments = await fetch(`${firebaseDB}/comments/${quoteID}.json`);
     const data = await getComments.json();
 
     if (!getComments.ok) {
-        httpAction.requestError(getComments.statusText || "Could get comments.")
+        throw new Error("Could get comments." || getComments.statusText);
     };
 
     const comments = [];
@@ -90,11 +86,11 @@ export async function getAllComments(quoteID) {
     for (const key in data) {
         const comment = {
             id: key,
-            ...data[key]
+            value: data[key]
         };
         comments.push(comment);
     };
 
-    httpAction.commentsSending(comments);
+    return comments;
 
 };

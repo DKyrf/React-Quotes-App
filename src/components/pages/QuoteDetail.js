@@ -1,26 +1,37 @@
-import { Fragment, useState } from "react";
+import { Fragment, useCallback, useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux"
+import { newQuoteAction } from "../store/newQuoteSlice";
 import { Link, Navigate, Outlet, useParams } from "react-router-dom"
-import { useSelector } from "react-redux";
+
+import { fetchSingleQuote } from "../hooks/use-http";
 import HighlightedQuote from "../quotes/HighlightedQuote";
 
 export default function QuoteDetail() {
-    const [showComments, setShowComment] = useState(false)
-    const quotes = useSelector(state => state.quoteReducer)
+    const dispatchFN = useDispatch();
+    const showComment = useSelector(state => state.newQuoteReducer.showComments)
+    const [quote, setQuote] = useState([]);
     const inParams = useParams();
-    const quote = quotes.quotesStore.find(el => el.id === inParams.quoteID);
 
-    const clickHandler = () => setShowComment(prev => !prev)
+    const quoteFinder = useCallback(async () => {
+        const fetchedQuote = await fetchSingleQuote(inParams.quoteID);
+        setQuote(fetchedQuote);
+    }, [inParams.quoteID]);
+
+    useEffect(() => {
+        quoteFinder();
+    }, [quoteFinder])
+
+    const clickHandler = () => dispatchFN(newQuoteAction.setCommentsVisibility(true))
 
     return (
         <Fragment>
             <h1>QuoteDetail</h1>
             {quote ? <HighlightedQuote text={quote.text} author={quote.author} /> : <Navigate to="/no-quote-existed" replace={true} />}
-            {!showComments && <Link onClick={clickHandler} className="btn--flat centered" to="comments"> Render comments </Link>}
-            {quote && showComments && <Outlet />}
+            {!showComment && <Link onClick={clickHandler} className="btn--flat centered" to="comments"> Render comments </Link>}
+            {quote && showComment && <Outlet />}
 
         </Fragment>
 
     )
 }
 
-//add nofound with *
