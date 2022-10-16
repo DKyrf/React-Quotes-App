@@ -11,13 +11,11 @@ const httpSlice = createSlice({
     initialState,
     reducers: {
         quotesSending(state) {
-            console.log("CYKA")
             state.status = "Pending...";
             state.quotes = [];
             state.error = null;
         },
         requestSucessfull(state, action) {
-            console.log("CYKA_БЛЯ")
             state.quotes = action.payload;
             state.error = null;
             state.status = "Completed";
