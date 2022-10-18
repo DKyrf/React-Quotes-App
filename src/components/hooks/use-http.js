@@ -20,7 +20,7 @@ export async function FetchQuotes() {
         quotes.push(quote);
     };
 
-    return { quotes: quotes, error: null };
+    return quotes;
 
 };
 

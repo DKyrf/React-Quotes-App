@@ -1,6 +1,4 @@
-import { Fragment, useEffect } from 'react';
-import { httpAction } from '../store/httpSlice';
-import { useSelector, useDispatch } from "react-redux";
+import { Fragment } from 'react';
 import { FetchQuotes } from '../hooks/use-http';
 import { useLocation, useNavigate } from 'react-router-dom';
 import QuoteItem from './QuoteItem';
@@ -14,34 +12,13 @@ const sorteQuotes = (prevQuotes, ascChecker) => [...prevQuotes].sort((a, b) => {
   }
 });
 
-const QuoteList = () => {
-
-  const dispatchFN = useDispatch();
-  const { quotes, status, error } = useSelector(state => state.httpReducer)
-
-
-  useEffect(() => {
-    const getData = async () => {
-      dispatchFN(httpAction.quotesSending());
-      const { quotes, error } = await FetchQuotes();
-      console.log(error, quotes)
-      if (!error) {
-        dispatchFN(httpAction.requestSucessfull(quotes));
-      }
-    };
-
-    getData();
-
-  }, [dispatchFN]);
-
-  console.log(quotes, status, error)
-
+const QuoteList = (props) => {
 
   const navigate = useNavigate();
   const searchParams = useLocation();
   const searched = new URLSearchParams(searchParams.search);
   const isAscending = searched.get("sort") === "asc";
-  const sorted = sorteQuotes(quotes, isAscending);
+  const sorted = sorteQuotes(props.quotes, isAscending);
 
 
 
@@ -70,6 +47,6 @@ const QuoteList = () => {
 
 export default QuoteList;
 
-export const loader = () => {
-  return FetchQuotes
+export function loader() {
+  return FetchQuotes()
 }
