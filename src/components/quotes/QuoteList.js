@@ -69,3 +69,7 @@ const QuoteList = () => {
 };
 
 export default QuoteList;
+
+export const loader = () => {
+  return FetchQuotes
+}
