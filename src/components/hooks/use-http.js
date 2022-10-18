@@ -1,5 +1,3 @@
-import { httpAction } from "../store/httpSlice";
-
 const firebaseDB = "https://router-quotes-acf44-default-rtdb.firebaseio.com";
 
 export async function FetchQuotes() {

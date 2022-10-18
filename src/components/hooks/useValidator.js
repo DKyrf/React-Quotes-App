@@ -9,7 +9,6 @@ export default function useValidator() {
 
     useEffect(() => {
         if (author.trim() !== "" && text.trim() !== "") {
-            console.log(author, text)
             dispatchFN(newQuoteAction.setValid(true))
         } else {
             dispatchFN(newQuoteAction.setValid(false))
