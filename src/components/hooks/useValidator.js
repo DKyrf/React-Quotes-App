@@ -34,8 +34,6 @@ export default function useValidator() {
     const authValid = authTouched && author.trim() === "" && !isValid;
     const textValid = textTouched && text.trim() === "" && !isValid;
 
-    console.log(authValid, textValid)
-
     return {
         authChangeHandler,
         textChangeHandler,

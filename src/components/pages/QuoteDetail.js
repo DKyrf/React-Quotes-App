@@ -1,37 +1,34 @@
-import { Fragment, useCallback, useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux"
-import { newQuoteAction } from "../store/newQuoteSlice";
-import { Link, Navigate, Outlet, useParams } from "react-router-dom"
-
+import { Fragment, useEffect, useState } from "react";
+import { Link, Navigate, Outlet } from "react-router-dom"
+import { useLoaderData } from "react-router-dom";
 import { fetchSingleQuote } from "../hooks/use-http";
 import HighlightedQuote from "../quotes/HighlightedQuote";
 
 export default function QuoteDetail() {
-    const dispatchFN = useDispatch();
-    const showComment = useSelector(state => state.newQuoteReducer.showComments)
-    const [quote, setQuote] = useState([]);
-    const inParams = useParams();
-
-    const quoteFinder = useCallback(async () => {
-        const fetchedQuote = await fetchSingleQuote(inParams.quoteID);
-        setQuote(fetchedQuote);
-    }, [inParams.quoteID]);
-
     useEffect(() => {
-        quoteFinder();
-    }, [quoteFinder])
+        return setShowComments(false)
+    }, []);
 
-    const clickHandler = () => dispatchFN(newQuoteAction.setCommentsVisibility(true))
+    const [showComment, setShowComments] = useState(false);
+
+    const getLoader = useLoaderData();
+
+    const clickHandler = () => setShowComments(true);
 
     return (
         <Fragment>
             <h1>QuoteDetail</h1>
-            {quote ? <HighlightedQuote text={quote.text} author={quote.author} /> : <Navigate to="/no-quote-existed" replace={true} />}
-            {!showComment && <Link onClick={clickHandler} className="btn--flat centered" to="comments"> Render comments </Link>}
-            {quote && showComment && <Outlet />}
+            {getLoader ? <HighlightedQuote text={getLoader.text} author={getLoader.author} /> : <Navigate to="/no-quote-existed" replace={true} />}
+            {!showComment
+                ? <Link onClick={clickHandler} className="btn--flat centered" to="comments"> Render comments </Link>
+                : <Outlet />}
 
         </Fragment>
 
     )
-}
+};
+
+export function loader(obj) {
+    return fetchSingleQuote(obj.params.quoteID);
+};
 
