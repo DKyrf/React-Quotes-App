@@ -1,40 +1,24 @@
 import useValidator from "../hooks/useValidator";
-import { useSelector, useDispatch } from "react-redux";
-import { newQuoteAction } from "../store/newQuoteSlice";
-import { addQuote } from "../hooks/use-http";
-import { useCallback } from "react";
+import { useSelector } from "react-redux";
 import LoadingSpinner from "../UI/LoadingSpinner"
 import Card from '../UI/Card';
 import classes from './QuoteForm.module.css';
+import { Form, useActionData } from "react-router-dom";
 
 let init = true;
 
 const QuoteForm = (props) => {
   const { authChangeHandler, textChangeHandler, authorBlur, textBlur, authValid, textValid, } = useValidator();
+  const data = useActionData();
+  console.log(data);
 
   init = false;
 
   const newEntry = useSelector(state => state.newQuoteReducer);
-  const dispatchFN = useDispatch();
-
-  const fetchQuotes = useCallback(async () => {
-    const quotes = await addQuote({
-      author: newEntry.author,
-      text: newEntry.text
-    });
-
-    return quotes;
-  }, [newEntry]);
-
-  function submitFormHandler(event) {
-    event.preventDefault();
-    fetchQuotes();
-    dispatchFN(newQuoteAction.reset());
-  };
 
   return (
     <Card>
-      <form className={classes.form} onSubmit={submitFormHandler}>
+      <Form className={classes.form} method="post" action="/new-quote">
         {props.isLoading && (
           <div className={classes.loading}>
             <LoadingSpinner />
@@ -47,8 +31,8 @@ const QuoteForm = (props) => {
             style={{ backgroundColor: authValid && !init ? "pink" : "white" }}
             onBlur={authorBlur}
             onChange={authChangeHandler}
-            value={newEntry.author}
             type='text'
+            name="author"
             id='author' />
         </div>
         <div className={classes.control}>
@@ -57,7 +41,7 @@ const QuoteForm = (props) => {
             style={{ backgroundColor: textValid && !init ? "pink" : "white" }}
             onBlur={textBlur}
             onChange={textChangeHandler}
-            value={newEntry.text}
+            name="text"
             id='text'
             rows='5' ></textarea>
         </div>
@@ -67,7 +51,7 @@ const QuoteForm = (props) => {
             className='btn'
             disabled={!newEntry.isValid}>Add Quote</button>
         </div>
-      </form>
+      </Form>
     </Card>
   );
 };

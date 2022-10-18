@@ -8,20 +8,19 @@ import Comments from "./components/comments/Comments";
 import NotFound from "./components/pages/NotFound";
 import { loader as fetchLoader } from "./components/quotes/QuoteList"
 import { loader as getLoader } from "./components/pages/QuoteDetail"
+import { action as postAction } from "./components/pages/NewQuotes"
 
 function App() {
 
 
   const roures = createBrowserRouter(createRoutesFromElements(
-    <Route path="/" element={<Layout />} >
+    <Route path="/" element={<Layout />} errorElement={<NotFound />}>
       <Route path="/quotes/*" element={<AllQuotes />} loader={fetchLoader} />
-      <Route path="/new-quote" element={<NewQuotes />} />
+      <Route path="/new-quote" element={<NewQuotes />} action={postAction} />
       <Route path="/quotes/:quoteID/*" element={<QuoteDetail />} loader={getLoader}>
         <Route path="comments" element={<Comments />} />
       </Route>
       <Route path="/highlighted" element={<HighlightedQuote />} />
-      <Route path="*" element={<NotFound />} />
-
     </Route>
   ));
 
