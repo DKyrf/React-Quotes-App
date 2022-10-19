@@ -1,16 +1,14 @@
 import useValidator from "../hooks/useValidator";
 import { useSelector } from "react-redux";
+import { Form } from "react-router-dom";
 import LoadingSpinner from "../UI/LoadingSpinner"
 import Card from '../UI/Card';
 import classes from './QuoteForm.module.css';
-import { Form, useActionData } from "react-router-dom";
 
 let init = true;
 
 const QuoteForm = (props) => {
   const { authChangeHandler, textChangeHandler, authorBlur, textBlur, authValid, textValid, } = useValidator();
-  const data = useActionData();
-  console.log(data);
 
   init = false;
 

@@ -10,7 +10,7 @@ export default function NewQuotes() {
 }
 
 export async function action(obj) {
-    console.log(obj);
+
     const formData = await obj.request.formData();
     const newPost = {
         author: formData.get("author"),

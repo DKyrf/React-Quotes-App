@@ -4,7 +4,7 @@ import QuoteList from "../quotes/QuoteList"
 
 export default function AllQuotes() {
 
-    const doNotUnderstand = useLoaderData();
+    const quotesLoader = useLoaderData();
 
-    return <QuoteList quotes={doNotUnderstand} />
+    return <QuoteList quotes={quotesLoader} />
 }
