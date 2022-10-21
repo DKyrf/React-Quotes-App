@@ -1,3 +1,4 @@
+import React from 'react';
 import { addComment } from '../hooks/use-http';
 import { Form, redirect } from 'react-router-dom';
 
@@ -21,7 +22,7 @@ const NewCommentForm = (props) => {
   );
 };
 
-export default NewCommentForm;
+export default React.memo(NewCommentForm);
 
 
 export async function action(obj) {

@@ -18,3 +18,9 @@
   text-align: right;
   color: #a1e0e0;
 }
+
+@media all and (max-width: 420px) {
+  .quote p {
+    font-size: 2rem;
+  }
+}

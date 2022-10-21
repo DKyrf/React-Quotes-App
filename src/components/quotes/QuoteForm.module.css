@@ -52,3 +52,13 @@
   background-color: grey;
   cursor: none;
 }
+
+@media all and (max-width: 420px) {
+  .control label {
+    text-align: center;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+  };
+  
+}

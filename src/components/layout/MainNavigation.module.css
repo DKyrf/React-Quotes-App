@@ -35,3 +35,12 @@
 .nav a.active {
   color: #e6fcfc;
 }
+
+@media all and (max-width: 420px) {
+  .header{
+    display: flex;
+    flex-direction: column;
+  };
+
+
+}

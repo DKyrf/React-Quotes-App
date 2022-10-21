@@ -1,3 +1,4 @@
+import React from 'react';
 import CommentItem from './CommentItem';
 import classes from './CommentsList.module.css';
 
@@ -11,4 +12,4 @@ const CommentsList = (props) => {
   );
 };
 
-export default CommentsList;
+export default React.memo(CommentsList);

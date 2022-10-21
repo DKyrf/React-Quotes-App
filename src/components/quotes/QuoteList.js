@@ -1,3 +1,4 @@
+import React from 'react';
 import { Fragment } from 'react';
 import { FetchQuotes } from '../hooks/use-http';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -45,7 +46,7 @@ const QuoteList = (props) => {
   );
 };
 
-export default QuoteList;
+export default React.memo(QuoteList);
 
 export function loader() {
   return FetchQuotes()

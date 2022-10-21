@@ -1,3 +1,4 @@
+import React from "react";
 import useValidator from "../hooks/useValidator";
 import { useSelector } from "react-redux";
 import { Form } from "react-router-dom";
@@ -54,7 +55,7 @@ const QuoteForm = (props) => {
   );
 };
 
-export default QuoteForm;
+export default React.memo(QuoteForm);
 
 
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import classes from './HighlightedQuote.module.css';
 
 const HighlightedQuote = (props) => {
@@ -9,4 +10,4 @@ const HighlightedQuote = (props) => {
   );
 };
 
-export default HighlightedQuote;
+export default React.memo(HighlightedQuote);

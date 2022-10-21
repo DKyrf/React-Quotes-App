@@ -67,3 +67,13 @@ li{
 ul{
   padding: 0;
 }
+
+@media (max-width: 420px) {
+  .btn{
+    text-align: center;
+    margin-left: 1rem;
+  }
+  button{
+    min-width: 100%;
+  };
+}
