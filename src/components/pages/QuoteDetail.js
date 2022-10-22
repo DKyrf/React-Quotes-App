@@ -17,7 +17,7 @@ export default function QuoteDetail() {
 
     return (
         <Fragment>
-            <h1>QuoteDetail</h1>
+            <h1 className="centered">QuoteDetail</h1>
             {getLoader ? <HighlightedQuote text={getLoader.text} author={getLoader.author} /> : <Navigate to="/no-quote-existed" replace={true} />}
             {!showComment
                 ? <Link onClick={clickHandler} className="btn--flat centered" to="comments"> Render comments </Link>

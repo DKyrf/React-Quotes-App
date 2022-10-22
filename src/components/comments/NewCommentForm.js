@@ -6,9 +6,6 @@ import classes from './NewCommentForm.module.css';
 
 const NewCommentForm = (props) => {
 
-
-
-
   return (
     <Form className={classes.form} method="post" action={`/quotes/${props.id}/comments`}>
       <div className={classes.control}>
