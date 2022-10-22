@@ -19,7 +19,6 @@ function App() {
 
   const roures = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />} errorElement={<NotFound />}>
-      {/* <Route index element={<Redirect to="/quotes" />} /> */}
       <Route path="/quotes/*" element={<AllQuotes />} loader={quotesLoader} />
       <Route path="/new-quote" element={<NewQuotes />} action={quoteAction} />
       <Route path="/quotes/:quoteID/*" element={<QuoteDetail />} loader={singleQuoteLoader}>
