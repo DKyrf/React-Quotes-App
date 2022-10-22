@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom"
+import { Route, Navigate, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom"
 import Layout from "./components/layout/Layout";
 import AllQuotes from "./components/pages/AllQuotes"
 import HighlightedQuote from "./components/quotes/HighlightedQuote"
