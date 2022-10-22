@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom"
 import Layout from "./components/layout/Layout";
+import AllQuotes from "./components/pages/AllQuotes"
 import HighlightedQuote from "./components/quotes/HighlightedQuote"
 import Comments from "./components/comments/Comments";
 import LoadingSpinner from "./components/UI/LoadingSpinner";
@@ -13,11 +14,12 @@ function App() {
 
   const NewQuotes = React.lazy(() => import("./components/pages/NewQuotes"));
   const QuoteDetail = React.lazy(() => import("./components/pages/QuoteDetail"));
-  const AllQuotes = React.lazy(() => import("./components/pages/AllQuotes"));
+  // const AllQuotes = React.lazy(() => import("./components/pages/AllQuotes"));
   const NotFound = React.lazy(() => import("./components/quotes/NoQuotesFound"));
 
   const roures = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />} errorElement={<NotFound />}>
+      {/* <Route index element={<Redirect to="/quotes" />} /> */}
       <Route path="/quotes/*" element={<AllQuotes />} loader={quotesLoader} />
       <Route path="/new-quote" element={<NewQuotes />} action={quoteAction} />
       <Route path="/quotes/:quoteID/*" element={<QuoteDetail />} loader={singleQuoteLoader}>
