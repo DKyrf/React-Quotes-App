@@ -9,8 +9,10 @@ export default function MainNavigation() {
 
         <nav className={classes.nav}>
             <ul>
-                <li> <NavLink className={item => item.isActive ? classes.active : ""} to="/quotes">Quotes</NavLink> </li>
-                <li> <NavLink className={item => item.isActive ? classes.active : ""} to="/new-quote">New Quotes</NavLink> </li>
+                <li> <NavLink className={item => item.isActive ? classes.active : ""} to="/quotes"> Quotes </NavLink> </li>
+                <li> <NavLink className={item => item.isActive ? classes.active : ""} to="/new-quote"> New Quotes </NavLink> </li>
+                <li> <NavLink className={item => item.isActive ? classes.active : ""} to="/auth_form"> Log In </NavLink> </li>
+                <li> <NavLink className={item => item.isActive ? classes.active : ""} to="/log_out"> Log Out </NavLink></li>
             </ul>
         </nav>
     </header>
