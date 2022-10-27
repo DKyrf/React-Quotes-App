@@ -1,11 +1,18 @@
 import { useState, useRef } from "react";
+import { authAction } from "../components/store/authSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
-// import { authUser } from "../components/hooks/use-http"
 import classes from "./AuthForm.module.css";
 
 const AuthForm = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    const navigate = useNavigate();
+
+    const dispatchFN = useDispatch();
+
     const emailRef = useRef();
     const passwordRef = useRef();
 
@@ -15,10 +22,8 @@ const AuthForm = () => {
 
     const submitAuth = (event) => {
         event.preventDefault();
-
-        let url;
-
         setIsLoading(true);
+        let url;
 
         if (isLoggedIn) {
             url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD2EGbmA_S4qaFcPtzgzq2rD9BrMnU-JI0"
@@ -37,7 +42,8 @@ const AuthForm = () => {
                 "Content-Type": "application/json"
             },
         }).then(response => {
-            setIsLoading(false)
+            setIsLoading(false);
+            setIsLoggedIn(true);
             if (response.ok) {
                 console.log("response >>> ", response);
                 return response.json()
@@ -49,15 +55,14 @@ const AuthForm = () => {
                     };
                     alert(errorMessage);
                 })
-            }
+            };
         }).then(data => {
             emailRef.current.value = "";
             passwordRef.current.value = "";
-
-            //data about tokens etc.
-            console.log(data);
+            dispatchFN(authAction.logIn(data.idToken));
+            navigate("/quotes");
         }).catch(error => {
-            alert(error.message)
+            alert(error.message);
         });
 
     }
@@ -93,16 +98,3 @@ const AuthForm = () => {
 };
 
 export default AuthForm;
-
-// export async function authenticate(obj) {
-//     const formData = await obj.request.formData();
-//     const user = {
-//         email: formData.get("email"),
-//         password: formData.get("password"),
-//     };
-//     try {
-//         await authUser(user);
-//     } catch (error) {
-//         throw new Error("Something went wrong!")
-//     }
-// };
