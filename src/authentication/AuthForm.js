@@ -1,15 +1,17 @@
 import { useState, useRef } from "react";
 import { authAction } from "../components/store/authSlice";
-import { useDispatch } from "react-redux";
+import { AuthHandler } from "../components/hooks/use-http"
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import classes from "./AuthForm.module.css";
 
 const AuthForm = () => {
+    const navigate = useNavigate();
+
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-    const navigate = useNavigate();
+    const authStatus = useSelector(state => state.authReducer);
 
     const dispatchFN = useDispatch();
 
@@ -20,7 +22,7 @@ const AuthForm = () => {
         setIsLoggedIn(prev => !prev)
     };
 
-    const submitAuth = (event) => {
+    const submitAuth = async (event) => {
         event.preventDefault();
         setIsLoading(true);
         let url;
@@ -31,46 +33,26 @@ const AuthForm = () => {
             url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD2EGbmA_S4qaFcPtzgzq2rD9BrMnU-JI0"
         };
 
-        fetch(url, {
-            method: "POST",
-            body: JSON.stringify({
-                email: emailRef.current.value,
-                password: passwordRef.current.value,
-                returnSecureToken: true,
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            },
-        }).then(response => {
-            setIsLoading(false);
-            setIsLoggedIn(true);
-            if (response.ok) {
-                console.log("response >>> ", response);
-                return response.json()
-            } else {
-                return response.json().then(data => {
-                    let errorMessage = "Authentication failed!";
-                    if (data && data.error && data.error.message) {
-                        errorMessage = data.error.message
-                    };
-                    alert(errorMessage);
-                })
-            };
-        }).then(data => {
-            emailRef.current.value = "";
-            passwordRef.current.value = "";
-            dispatchFN(authAction.logIn(data.idToken));
-            navigate("/quotes");
-        }).catch(error => {
-            alert(error.message);
+        const res = await AuthHandler(url, {
+            emailRef,
+            passwordRef
         });
 
-    }
+        if (res.status === "ERR" && !res.token) {
+            dispatchFN(authAction.setErrorMessege(res.message))
+            setIsLoading(false);
+        } else {
+            setIsLoading(false);
+            dispatchFN(authAction.logIn(res.token));
+            navigate("/");
+        };
 
+    }
 
     return (
         <section className={classes.auth}>
             <h1>{isLoggedIn ? "Login" : "Sign UP"}</h1>
+            {authStatus.error && <h3 className="centered" style={{ color: "red", margin: "0.5rem" }}> {`( ${authStatus.error} )`} </h3>}
             <form onSubmit={submitAuth}>
                 <div className={classes.input_control}>
                     <label htmlFor="email">Your Email</label>

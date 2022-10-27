@@ -10,11 +10,13 @@ const NewCommentForm = (props) => {
     <Form className={classes.form} method="post" action={`/quotes/${props.id}/comments`}>
       <div className={classes.control}>
         <label htmlFor='comment'>Your Comment</label>
-        <textarea required id='comment' rows='5' name="comment"></textarea>
+        <textarea minLength="6" required id='comment' rows='5' name="comment"></textarea>
       </div>
       <div className={classes.actions}>
-        <button className='btn'>Add Comment</button>
+        <button onClick={props.cancelHandler} className={`${classes.cancel} + btn`}>Cancel</button>
+        <button className='btn'>Add Comment </button>
       </div>
+
     </Form>
   );
 };
@@ -28,6 +30,7 @@ export async function action(obj) {
     id: obj.params.quoteID,
     value: formData.get("comment")
   };
+  // window.location.reload(false)
 
   try {
     await addComment(newComment);

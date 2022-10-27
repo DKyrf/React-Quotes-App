@@ -17,13 +17,13 @@ const Comments = () => {
 
   return (
     <section className={classes.comments}>
-      <h2>User Comments</h2>
+      <h2>Users Comments</h2>
       {!isAddingComment && (
         <button className='btn' onClick={startAddCommentHandler}>
           Add a Comment
         </button>
       )}
-      {isAddingComment && <NewCommentForm id={inParams.quoteID} />}
+      {isAddingComment && <NewCommentForm id={inParams.quoteID} cancelHandler={() => setIsAddingComment(false)} />}
       <ul>
         {commentsLoaderData.map(el => <CommentItem key={el.id} text={el.value} />)}
       </ul>

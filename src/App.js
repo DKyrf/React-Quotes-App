@@ -10,26 +10,27 @@ import { loader as singleQuoteLoader } from "./components/pages/QuoteDetail"
 import { loader as commentsLoader } from "./components/comments/Comments";
 import { action as quoteAction } from "./components/pages/NewQuotes"
 import { action as commentAction } from "./components/comments/NewCommentForm";
-// import AuthForm from "./authentication/AuthForm";
+import { useSelector } from "react-redux";
+
 function App() {
+  const authStatus = useSelector(state => state.authReducer)
 
   const NewQuotes = React.lazy(() => import("./components/pages/NewQuotes"));
   const QuoteDetail = React.lazy(() => import("./components/pages/QuoteDetail"));
   const AuthForm = React.lazy(() => import("./authentication/AuthForm"));
-  const ProfilePage = React.lazy(() => import("./components/pages/ProfilePage"));
   const NotFound = React.lazy(() => import("./components/quotes/NoQuotesFound"));
 
   const roures = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />} errorElement={<NotFound />}>
       <Route index element={<Navigate to="/quotes" />} />
       <Route path="/quotes/*" element={<AllQuotes />} loader={quotesLoader} />
-      <Route path="/new-quote" element={<NewQuotes />} action={quoteAction} />
+      {authStatus.isLoggedIn && <Route path="/new-quote" element={<NewQuotes />} action={quoteAction} />}
       <Route path="/quotes/:quoteID/*" element={<QuoteDetail />} loader={singleQuoteLoader}>
         <Route path="comments" element={<Comments />} loader={commentsLoader} action={commentAction} />
       </Route>
       <Route path="/highlighted" element={<HighlightedQuote />} />
       <Route path="/auth_form/*" element={<AuthForm />} />
-      <Route path="/profile/:userID/*" element={<ProfilePage />} />
+      <Route path="*" element={<Navigate to="/quotes" />} />
     </Route>
   ));
 

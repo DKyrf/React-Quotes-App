@@ -36,6 +36,19 @@
   color: #e6fcfc;
 }
 
+.nav button{
+  font-size: 1.25rem;
+  border: none;
+  background-color: transparent;
+  color: #88dfdf;
+}
+
+.nav button:hover,
+.nav button:active,
+.nav button.active {
+  color: #e6fcfc;
+}
+
 @media all and (max-width: 420px) {
   .header{
     display: flex;

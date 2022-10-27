@@ -2,7 +2,6 @@ const firebaseDB = "https://router-quotes-acf44-default-rtdb.firebaseio.com";
 
 export async function FetchQuotes() {
 
-
     const fethedData = await fetch(`${firebaseDB}/quotes.json`);
     const data = await fethedData.json();
 
@@ -92,3 +91,40 @@ export async function getAllComments(quoteID) {
     return comments;
 
 };
+
+export async function AuthHandler(url, sendedData) {
+
+    return fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+            email: sendedData.emailRef.current.value,
+            password: sendedData.passwordRef.current.value,
+            returnSecureToken: true,
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        },
+    })
+        .then(res => {
+            if (res.ok) {
+                console.log("SUCCESSFULL", res)
+                return res.json()
+            } else {
+                return res.json().then(data => {
+                    let errorHandler = "Something went wrong...";
+                    if (data && data.error && data.error.message) {
+                        errorHandler = data.error.message;
+                    };
+                    return { status: "ERR", data: errorHandler };
+                })
+            }
+        })
+        .then(fetchedData => {
+            return { status: fetchedData.status, token: fetchedData.idToken, message: fetchedData.data };
+        })
+        .catch(error => {
+            console.log(error)
+        });
+
+
+}
