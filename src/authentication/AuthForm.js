@@ -7,10 +7,11 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 import classes from "./AuthForm.module.css";
 
 const AuthForm = () => {
-    const navigate = useNavigate();
-
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    const navigate = useNavigate();
+
     const authStatus = useSelector(state => state.authReducer);
 
     const dispatchFN = useDispatch();
@@ -25,6 +26,7 @@ const AuthForm = () => {
     const submitAuth = async (event) => {
         event.preventDefault();
         setIsLoading(true);
+
         let url;
 
         if (isLoggedIn) {
@@ -39,12 +41,18 @@ const AuthForm = () => {
         });
 
         if (res.status === "ERR" && !res.token) {
-            dispatchFN(authAction.setErrorMessege(res.message))
             setIsLoading(false);
+            dispatchFN(authAction.setErrorMessege(res.message))
         } else {
             setIsLoading(false);
             dispatchFN(authAction.logIn(res.token));
+            dispatchFN(authAction.calculateLogOutTime(res.expiresIn));
             navigate("/");
+
+            // setTimeout(() => {
+            //     dispatchFN(authAction.logOut());
+            //     navigate("/")
+            // }, authStatus.expirationTime)
         };
 
     }

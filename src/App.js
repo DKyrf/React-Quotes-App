@@ -13,8 +13,8 @@ import { action as commentAction } from "./components/comments/NewCommentForm";
 import { useSelector } from "react-redux";
 
 function App() {
-  const authStatus = useSelector(state => state.authReducer)
-
+  const authStatus = useSelector(state => state.authReducer);
+  console.log(authStatus);
   const NewQuotes = React.lazy(() => import("./components/pages/NewQuotes"));
   const QuoteDetail = React.lazy(() => import("./components/pages/QuoteDetail"));
   const AuthForm = React.lazy(() => import("./authentication/AuthForm"));

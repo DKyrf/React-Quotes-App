@@ -22,5 +22,9 @@
 @media all and (max-width: 420px) {
   .quote p {
     font-size: 2rem;
+    margin-top: 1rem;
+  }
+  .quote{
+    padding: 1rem;
   }
 }

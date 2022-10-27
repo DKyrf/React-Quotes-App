@@ -59,6 +59,12 @@
     font-weight: bold;
     display: block;
     margin-bottom: 0.5rem;
-  };
+  }
+  .actions {
+    text-align: center;
+  }
+  .actions button {
+    width: 100%;
+  }
   
 }

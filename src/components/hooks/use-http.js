@@ -107,7 +107,6 @@ export async function AuthHandler(url, sendedData) {
     })
         .then(res => {
             if (res.ok) {
-                console.log("SUCCESSFULL", res)
                 return res.json()
             } else {
                 return res.json().then(data => {
@@ -120,7 +119,13 @@ export async function AuthHandler(url, sendedData) {
             }
         })
         .then(fetchedData => {
-            return { status: fetchedData.status, token: fetchedData.idToken, message: fetchedData.data };
+            // const expTime = new Date(new Date().getTime() + (+fetchedData.expiresIn * 1000));
+            return {
+                status: fetchedData.status,
+                token: fetchedData.idToken,
+                message: fetchedData.data,
+                // expiresIn: expTime.toISOString(),
+            };
         })
         .catch(error => {
             console.log(error)
