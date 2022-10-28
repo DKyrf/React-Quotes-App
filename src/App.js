@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 import { Route, Navigate, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom"
 import Layout from "./components/layout/Layout";
 import AllQuotes from "./components/pages/AllQuotes"
@@ -14,7 +14,6 @@ import { useSelector } from "react-redux";
 
 function App() {
   const authStatus = useSelector(state => state.authReducer);
-  console.log(process.env);
   const NewQuotes = React.lazy(() => import("./components/pages/NewQuotes"));
   const QuoteDetail = React.lazy(() => import("./components/pages/QuoteDetail"));
   const AuthForm = React.lazy(() => import("./authentication/AuthForm"));
