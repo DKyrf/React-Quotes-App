@@ -4,7 +4,6 @@ const initialState = {
     token: localStorage.getItem("token"),
     isLoggedIn: !!localStorage.getItem("token"),
     error: null,
-    expirationTime: localStorage.getItem("expirationTime"),
 }
 
 const authSlice = createSlice({
@@ -27,18 +26,7 @@ const authSlice = createSlice({
         },
         setErrorMessege(state, action) {
             state.error = action.payload;
-        },
-        calculateLogOutTime(state, action) {
-            const currentTime = new Date().getTime();
-            const adjExpirationTime = new Date(action.payload).getTime();
-
-            const remeinigTime = adjExpirationTime - currentTime;
-            console.log(remeinigTime);
-
-            localStorage.setItem("expirationTime", remeinigTime);
-            state.expirationTime = remeinigTime;
-
-        },
+        }
     }
 });
 

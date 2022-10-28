@@ -30,9 +30,9 @@ const AuthForm = () => {
         let url;
 
         if (isLoggedIn) {
-            url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD2EGbmA_S4qaFcPtzgzq2rD9BrMnU-JI0"
+            url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`
         } else {
-            url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD2EGbmA_S4qaFcPtzgzq2rD9BrMnU-JI0"
+            url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_API_KEY}`
         };
 
         const res = await AuthHandler(url, {
@@ -46,14 +46,9 @@ const AuthForm = () => {
         } else {
             setIsLoading(false);
             dispatchFN(authAction.logIn(res.token));
-            dispatchFN(authAction.calculateLogOutTime(res.expiresIn));
             navigate("/");
-
-            // setTimeout(() => {
-            //     dispatchFN(authAction.logOut());
-            //     navigate("/")
-            // }, authStatus.expirationTime)
         };
+
 
     }
 

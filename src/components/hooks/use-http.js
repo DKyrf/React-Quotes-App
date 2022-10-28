@@ -119,12 +119,10 @@ export async function AuthHandler(url, sendedData) {
             }
         })
         .then(fetchedData => {
-            // const expTime = new Date(new Date().getTime() + (+fetchedData.expiresIn * 1000));
             return {
                 status: fetchedData.status,
                 token: fetchedData.idToken,
                 message: fetchedData.data,
-                // expiresIn: expTime.toISOString(),
             };
         })
         .catch(error => {
